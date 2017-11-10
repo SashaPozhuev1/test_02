@@ -12,7 +12,7 @@ bool read(unsigned int &size) {
 
 	bool success = true;
 
-	if (stream >> size) {
+	if (stream >> size && size > 0) {
 
 	}
 	else {
