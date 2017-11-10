@@ -30,17 +30,21 @@ bool create(double * & mass, int resultsize) {
 	istringstream stream(stroka);
 
 	int size = 0;
-
+	int element;
 	
 	mass = new double[resultsize];
-	for (int i = 0; i < resultsize; i++) {
-		if (!(stream >> mass[i])) {
+	int i = 0;
+	while (stream >> element) {
+		if (size < resultsize) {
+			mass[i] = element;
+			i++;
+			size++;
+		}
+		else {
 			success = false;
 			break;
 		}
-		size++;
 	}
-	
 	
 	if (resultsize > size) {
 		success = false;
