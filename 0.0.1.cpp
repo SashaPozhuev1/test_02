@@ -5,7 +5,7 @@
 
 using namespace std;
 
-bool read(unsigned int &size) {
+bool read(int &size) {
 	string stroka;
 	getline(cin, stroka);
 	istringstream stream(stroka);
@@ -22,15 +22,16 @@ bool read(unsigned int &size) {
 	return success;
 }
 
-bool create(double * & mass, unsigned int resultsize) {
+bool create(double * & mass, int resultsize) {
 	bool success = true;
 
 	string stroka;
 	getline(cin, stroka);
 	istringstream stream(stroka);
 
-	unsigned int size = 0;
+	int size = 0;
 
+	
 	mass = new double[resultsize];
 	for (int i = 0; i < resultsize; i++) {
 		if (!(stream >> mass[i])) {
@@ -39,7 +40,8 @@ bool create(double * & mass, unsigned int resultsize) {
 		}
 		size++;
 	}
-
+	
+	
 	if (resultsize > size) {
 		success = false;
 	}
@@ -47,13 +49,13 @@ bool create(double * & mass, unsigned int resultsize) {
 	return success;
 }
 
-void obmen(double * mass, unsigned int size) {
+void obmen(double * mass, int size) {
 	for (int i = 0; i < size / 2; i++) {
 		swap(mass[i], mass[size - 1 - i]);
 	}
 }
 
-void write(double * mass, unsigned int size) {
+void write(double * mass, int size) {
 	for (int i = 0; i < size; i++) {
 		cout << mass[i];
 		if (i != size - 1) {
@@ -72,11 +74,11 @@ void error() {
 
 int main()
 {
-  
-	unsigned int size = 0;
+
+	int size = 0;
 	double * mass = nullptr;
 
-	unsigned int schet = 0;
+	int schet = 0;
 	if (read(size)) {
 		if (create(mass, size)) {
 			obmen(mass, size);
@@ -90,7 +92,7 @@ int main()
 		error();
 	}
 
-	system("pause"); 
+	system("pause");
 
-    return 0;
+	return 0;
 }
