@@ -57,10 +57,8 @@ bool create(double * & mass, int resultsize) {
 void obmen(double * mass, int size, int rev) {
 	for (int i = 0; i < (size - rev) / 2; i++) {
 		swap(mass[i], mass[size - rev - 1 - i]);
-
-
 	}
-	for (int i = size - rev, j = 0; i < size - rev + (rev / 2); i++, j++) {
+	for (int i = size - rev, j = 0; i < ( size + rev ) / 2; i++, j++) {
 		swap(mass[i], mass[size - 1 - j]);
 	}
 	for (int i = 0; i < size / 2; i++) {
@@ -96,8 +94,13 @@ int main()
 		if (create(mass, size)) {
 			int rev = 0;
 			if (read(rev)) {
-				obmen(mass, size, rev);
-				write(mass, size);
+			    if (size >= rev) {
+				    obmen(mass, size, rev);
+				    write(mass, size);
+			    }
+			    else {
+				    error();
+			    }
 			}
 			else {
 				error();
