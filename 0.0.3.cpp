@@ -149,6 +149,7 @@ int main()
 				if (sdvig <= 2 * (rows + columns) - 4) {
 					change(matrix, rows, columns, sdvig);
 					write(matrix, rows, columns);
+					destroy(matrix, rows);
 				}
 				else {
 					error();
@@ -165,8 +166,7 @@ int main()
 	else {
 		error();
 	}
-
-	destroy(matrix, rows);
+	
 	system("pause");
 	return 0;
 }
