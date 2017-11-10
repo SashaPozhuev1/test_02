@@ -56,36 +56,61 @@ bool create(int ** & matrix, int & rows, int & columns) {
 	}
 	return success;
 }
-/*
-void change(int ** matrix, int rows, int columns, int sdvig) {
-	int *matrix1 = new int[rows + columns - 4];
-	int k = 0;
-	for (int i = 0; i < rows; i++) {
-		for (int j = 0; j < columns; j++) {
-			if (i == 0 || i == rows - 1) {
-				matrix1[k] = matrix[i][j];
-				k++;
-			}
-		}
+
+void obmen(int * mass, int size, int sdvig) {
+	for (int i = 0; i < (size - sdvig) / 2; i++) {
+		swap(mass[i], mass[size - sdvig - 1 - i]);
 	}
-
-	for (int j = 0; j < columns; j++) {
-		for (int i = 0; i < rows; i++) {
-			if ((j == 0 && i != 0 && i != rows - 1) ||
-				(j == columns - 1 && i != 0 && i != rows - 1)) {
-				matrix1[k] = matrix[i][j];
-				k++;
-			}
-		}
+	for (int i = size - sdvig, j = 0; i < size - (sdvig / 2); i++, j++) {
+		swap(mass[i], mass[size - 1 - j]);
 	}
-
-	
-
-	for (int i = 0; i < rows; i++) {
-		
+	for (int i = 0; i < size / 2; i++) {
+		swap(mass[i], mass[size - 1 - i]);
 	}
 }
-*/
+
+void change(int ** matrix, int rows, int columns, int sdvig) {
+	int *mass = new int[2 * (rows + columns) - 4];
+	int k = 0;
+	
+	for (int j = 0, i = 0; j < columns; j++) {
+		mass[k] = matrix[i][j];
+		k++;
+	}
+	for (int i = 1, j = columns - 1; i < rows - 1; i++) {
+		mass[k] = matrix[i][j];
+		k++;
+	}
+	for (int j = columns - 1, i = rows - 1; j > -1; j--) {
+		mass[k] = matrix[i][j];
+		k++;
+	}
+	for (int i = rows - 2, j = 0; i > 0; i--) {
+		mass[k] = matrix[i][j];
+		k++;
+	}
+
+	obmen(mass, k, sdvig);
+	k--;
+
+	for (int i = 1, j = 0; i < rows - 1; i++) {
+		matrix[i][j] = mass[k];
+		k--;
+	}
+	for (int j = 0, i = rows - 1; j < columns; j++) {
+		matrix[i][j] = mass[k];
+		k--;
+	}
+	for (int i = rows - 2, j = columns - 1; i > 0; i--) {
+		matrix[i][j] = mass[k];
+		k--;
+	}
+	for (int j = columns - 1, i = 0; j > -1; j--) {
+		matrix[i][j] = mass[k];
+		k--;
+	}
+}
+
 void write(int ** matrix, int rows, int columns) {
 	cout << '\n';
 	for (int i = 0; i < rows; i++) {
@@ -105,6 +130,13 @@ void error() {
 	cout << "An error has occured while reading input data.\n";
 }
 
+void destroy(int ** & matrix, int rows) {
+	for (int i = 0; i < rows; i++) {
+		delete[] matrix[i];
+	}
+	delete[] matrix;
+}
+
 
 int main()
 {
@@ -114,7 +146,13 @@ int main()
 	if (read(rows, columns)) {
 		if (create(matrix, rows, columns)) {
 			if (read_sdvig(sdvig)) {
-				write(matrix, rows, columns);
+				if (sdvig <= 2 * (rows + columns) - 4) {
+					change(matrix, rows, columns, sdvig);
+					write(matrix, rows, columns);
+				}
+				else {
+					error();
+				}
 			}
 			else {
 				error();
@@ -128,6 +166,7 @@ int main()
 		error();
 	}
 
+	destroy(matrix, rows);
 	system("pause");
 	return 0;
 }
